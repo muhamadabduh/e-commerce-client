@@ -1,0 +1,30 @@
+.fixed-top{
+    position: relative;
+}
+
+.container {
+    margin-top: 10px;
+}
+
+.bg-green{
+    background-color: teal;
+}
+.table td{
+    text-align: center;   
+}
+.table th{
+    text-align: center;   
+}
+.total-cart{
+    background-color: lightseagreen
+}
+
+.btn-cart{
+    background-color: teal;
+    border-color: teal;
+    text-decoration-color: white;
+}
+
+#search-bar{
+    width: 600px;
+}
