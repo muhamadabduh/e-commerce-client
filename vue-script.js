@@ -34,24 +34,33 @@ var app = new Vue({
         filteredItems: [],
         categories: '',
         search: '',
-        username: '',
         user: {
             email: '',
             password: ''
         },
+        newItem: {
+            
+        },
         errorLogin: '',
-        token: '',
-        showForm: false
+        showForm: false,
+        loginStatus: false
     },
     mounted : function(){
         this.getAllItems()
         this.getAllCategories()
+        this.isLogin()
         this.items = this.filteredItems
+    },
+
+    watch: {
+        username: function(){
+            this.username = localStorage.getItem('name')
+        }
     },
 
     methods: {
         addToCart: function(item){
-            if(this.isLogin()=== true){
+     
                 let checkCarts = this.carts.findIndex(cart => cart._id == item._id)
                 if(checkCarts == -1){
                     item.qty= 1
@@ -62,9 +71,15 @@ var app = new Vue({
                     this.carts[checkCarts].subtotal+= item.price
                 }
                 this.cartInfo.totalItems++ 
-            } else {
 
-            }
+        },
+
+        getToken: function(){
+            return localStorage.getItem('token')
+        },
+
+        getUsername: function(){
+            return localStorage.getItem('name')
         },
 
         getTotalCarts : function(){
@@ -116,29 +131,19 @@ var app = new Vue({
             }
         },
 
-        isLogin: function(){
-            let token = localStorage.getItem('token')
-            if(token){
-                return true
-            } else {
-                return false
-            }
-        },
-
         setPage: function(page){
             this.page = page
         }, 
 
         login: function(user){
             axios
-                .post('http://localhost:3000/users/login', this.user)
-                .then(function(response){
-                    // console.log(response.data.name)
-                    localStorage.setItem('name', response.data.name)
-                    this.username = localStorage.getItem('name')
-                    localStorage.setItem('token', response.data.token)
-                    this.token = localStorage.getItem('token')
-                    location.reload()
+            .post('http://localhost:3000/users/login', this.user)
+            .then(response=> {
+                    let data = response.data
+                    console.log(data)
+                    localStorage.setItem('token', data.token)
+                    localStorage.setItem('name', data.name)
+                    $('#loginModal').modal('hide')
                 })
                 .catch(error=>{
                     // console.log(error)
@@ -151,7 +156,6 @@ var app = new Vue({
         logout: function(){
             localStorage.clear()
             this.token = ''
-            location.reload()
         },
 
         isEmail: function(input){
@@ -164,10 +168,12 @@ var app = new Vue({
         
         getUserItems: function(){
             axios
-                .get('http://localhost:3000/items', {headers: this.token})
+                .get(`http://localhost:3000/items/${this.getUsername()}`, {
+                    headers: { token: this.getToken()}
+                })
                 .then(response=>{
+                    console.log(response)
                     this.items = response.data.items
-
                 })
                 .catch(err=>{
                     console.log(err.response)
@@ -177,9 +183,17 @@ var app = new Vue({
         createItem: function(){
             this.showForm = true
         }, 
+
         toUser: function(){
-            this.setPage('single-page-user')
+            this.page = 'single-user-page'
             this.getUserItems()
+        },
+        isLogin(){
+            if(localStorage.token){
+                return true
+            } else {
+                return false
+            }
         }
     }
 })
