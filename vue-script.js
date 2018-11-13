@@ -39,7 +39,13 @@ var app = new Vue({
             password: ''
         },
         newItem: {
-            
+            name: '',
+            description: '',
+            img: '',
+            category: '',
+            owner: '',
+            stock: 0,
+            price: 0
         },
         errorLogin: '',
         showForm: false,

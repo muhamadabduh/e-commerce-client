@@ -92,17 +92,17 @@
                     <br>
                     <div class="row">
                         <div class="form-group col-md-6" v-show="showForm==true">
-                            <input type="text" name="name" class="form-control" placeholder="Item Name" required> <br>
-                            <input class="form-control" type="text" name="description" id="description" placeholder="Description" required> <br>
-                            <input class="form-control" type="number" name="stock" id="stock" placeholder="Stock" required> <br>
-                            <input class="form-control" type="number" name="price" id="price" placeholder="Price" required> <br>
-                            <select name="category" class="form-control" id="category" required aria-placeholder="Category">
+                            <input type="text" name="name" class="form-control" placeholder="Item Name" v-model="newItem.name" required> <br>
+                            <input class="form-control" type="text" name="description" id="description" placeholder="Description" v-model="newItem.description" required> <br>
+                            <input class="form-control" type="number" name="stock" id="stock" placeholder="Stock" v-model="newItem.stock" required> <br>
+                            <input class="form-control" type="number" name="price" id="price" placeholder="Price" v-model="newItem.price" required> <br>
+                            <select name="category" class="form-control" id="category" v-model="newItem.category" required aria-placeholder="Category">
                                 <option value="" selected>Select Category</option>
                                 <option v-for="category in categories" v-bind:value="category._id">{{category.name}} </option>
                             </select> <br>
                             <div class="input-group">
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="inputGroupFile04">
+                                    <input type="file" class="custom-file-input" name="img" v-model="newItem.img" id="inputGroupFile04">
                                     <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
                                 </div>
                                 <div class="input-group-append">
